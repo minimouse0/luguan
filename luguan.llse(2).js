@@ -1,3 +1,6 @@
+// LiteLoader-AIDS automatic generated
+/// <reference path="c:\Users\Administrator\.vscode/dts/HelperLib-master/src/index.d.ts"/>
+
 const PLUGIN_Name = "luguan";
 
 /**
@@ -138,13 +141,7 @@ function shele(pl, number_max) {
   let max = number_max + 1;
 
   //加血效果
-  Effect(
-    pl,
-    CONFIG.get("加血效果").id,
-    CONFIG.get("加血效果").tick,
-    CONFIG.get("加血效果").level,
-    true
-  );
+  Effect(CONFIG, pl, "加血效果", true);
   pl_lig_nb = 0;
   playSheleTitle(pl);
   playSheleParticle(pl);
@@ -207,29 +204,11 @@ function playSheleParticle(player) {
  */
 function luguanTooOftenDebuff(pl) {
   //扣血
-  Effect(
-    pl,
-    CONFIG.get("扣血").id,
-    CONFIG.get("扣血").tick,
-    CONFIG.get("扣血").level,
-    false
-  );
+  Effect(CONFIG, pl, "扣血", false);
   //失明
-  Effect(
-    pl,
-    CONFIG.get("失明").id,
-    CONFIG.get("失明").tick,
-    CONFIG.get("失明").level,
-    false
-  );
+  Effect(CONFIG, pl, "失明", false);
   //虚弱
-  Effect(
-    pl,
-    CONFIG.get("虚弱").id,
-    CONFIG.get("虚弱").tick,
-    CONFIG.get("虚弱").level,
-    false
-  );
+  Effect(CONFIG, pl, "虚弱", false);
   pl.tell("休息一下吧，明天~好不好~");
   //Data.set(pl.xuid, { number_max: number_max, time_D: time_D, time_cd: system.getTimeObj() })
 }
@@ -258,13 +237,17 @@ let spawnParticle = (x = 0, y = 0, z = 0, dimId, type) => {
 /**
  * 为玩家添加效果
  * @param {Player} Player 添加效果的玩家
- * @param {number} id 药水效果的id
- * @param {number} tick 持续时间
- * @param {number} level 等级
+ * @param {JsonConfigFile} CONFIG
+ * @param {string} name 药水效果的id
  * @param {boolean} showParticles 是否显示粒子
  */
-let Effect = (Player, id, tick, level, showParticles) => {
-  return Player.addEffect(id, tick, level, showParticles);
+let Effect = (CONFIG, Player, name, showParticles) => {
+  return Player.addEffect(
+    CONFIG.get(name).id,
+    CONFIG.get(name).tick,
+    CONFIG.get(name).level,
+    showParticles
+  );
 };
 
 ll.registerPlugin(PLUGIN_Name, "打飞机插件", [0, 0, 3, Version.Dev]);
